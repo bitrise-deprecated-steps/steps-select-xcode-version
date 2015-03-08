@@ -46,10 +46,12 @@ fail_if_cmd_error "Failed to activate the specified Xcode version"
 
 # --- Report
 xcode_version_info_text="$(xcodebuild -version)"
+indented_xcode_version_info_text=$(${xcode_version_info_text} | awk '{print "    " $0}')
 xcode_sdks_info_text="$(xcodebuild -showsdks)"
+indented_xcode_sdks_info_text=$(${xcode_sdks_info_text} | awk '{print "    " $0}')
 #
 write_section_to_formatted_output '# Xcode Information'
 write_section_to_formatted_output '## Xcode Version'
-echo_string_to_formatted_output "${xcode_version_info_text}"
+echo_string_to_formatted_output "${indented_xcode_version_info_text}"
 write_section_to_formatted_output '## Xcode SDKs'
-echo_string_to_formatted_output "${xcode_sdks_info_text}"
+echo_string_to_formatted_output "${indented_xcode_sdks_info_text}"
