@@ -38,7 +38,7 @@ fi
 
 write_section_to_formatted_output "# Select Xcode Version"
 
-CONFIG_xcode_path="/Applications/Xcodes/Xcode${XCODE_CHANNEL_ID}.app"
+CONFIG_xcode_path="/Applications/Xcodes/Xcode${SELECT_XCODE_VERSION_CHANNEL_ID}.app"
 echo_string_to_formatted_output " * Selecting Xcode: \`${CONFIG_xcode_path}\`"
 
 sudo xcode-select --switch "${CONFIG_xcode_path}"
