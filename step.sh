@@ -31,6 +31,11 @@ set_error_cleanup_function CLEANUP_ON_ERROR_FN
 # ------------------------------
 # --- Main
 
+function set_xcode_path_by_channel {
+    local channel_id="$1"
+    CONFIG_xcode_path="/Applications/Xcodes/Xcode${channel_id}.app"
+}
+
 if [ -z "${SELECT_XCODE_VERSION_CHANNEL_ID}" ] ; then
 	finalcleanup "No Xcode Version Channel ID specified!"
 	exit 1
@@ -38,8 +43,20 @@ fi
 
 write_section_to_formatted_output "# Select Xcode Version"
 
-CONFIG_xcode_path="/Applications/Xcodes/Xcode${SELECT_XCODE_VERSION_CHANNEL_ID}.app"
+CONFIG_xcode_path=""
+set_xcode_path_by_channel "${SELECT_XCODE_VERSION_CHANNEL_ID}"
+if [[ "${SELECT_XCODE_VERSION_CHANNEL_ID}" == "-latest" ]] ; then
+    set_xcode_path_by_channel "-beta"
+    if [ ! -e "${CONFIG_xcode_path}" ] ; then
+        echo " (i) No -beta Xcode available, selecting -stable instead."
+        set_xcode_path_by_channel "-stable"
+    else
+        echo " (i) -beta Xcode found"
+    fi
+fi
+
 echo_string_to_formatted_output " * Selecting Xcode: \`${CONFIG_xcode_path}\`"
+
 
 sudo xcode-select --switch "${CONFIG_xcode_path}"
 fail_if_cmd_error "Failed to activate the specified Xcode version"
