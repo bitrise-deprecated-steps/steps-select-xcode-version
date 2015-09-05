@@ -36,7 +36,7 @@ function set_xcode_path_by_channel {
     CONFIG_xcode_path="/Applications/Xcodes/Xcode${channel_id}.app"
 }
 
-if [ -z "${SELECT_XCODE_VERSION_CHANNEL_ID}" ] ; then
+if [ -z "${version_channel_id}" ] ; then
 	finalcleanup "No Xcode Version Channel ID specified!"
 	exit 1
 fi
@@ -44,8 +44,8 @@ fi
 write_section_to_formatted_output "# Select Xcode Version"
 
 CONFIG_xcode_path=""
-set_xcode_path_by_channel "${SELECT_XCODE_VERSION_CHANNEL_ID}"
-if [[ "${SELECT_XCODE_VERSION_CHANNEL_ID}" == "-latest" ]] ; then
+set_xcode_path_by_channel "${version_channel_id}"
+if [[ "${version_channel_id}" == "-latest" ]] ; then
     set_xcode_path_by_channel "-beta"
     if [ ! -e "${CONFIG_xcode_path}" ] ; then
         echo " (i) No -beta Xcode available, selecting -stable instead."
