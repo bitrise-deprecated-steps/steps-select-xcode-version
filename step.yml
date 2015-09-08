@@ -24,7 +24,7 @@ is_skippable: false
 dependencies:
   - manager: _
     name: xcode
-run_if: ""
+run_if: ".IsCI"
 inputs:
   - version_channel_id: "-stable"
     opts:
