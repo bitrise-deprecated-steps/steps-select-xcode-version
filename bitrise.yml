@@ -4,7 +4,42 @@ default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
 workflows:
   test:
     steps:
+    - script:
+        title: Switch working dir to test/_tmp dir
+        description: |-
+          To prevent step testing issues, like referencing relative
+          files with just './some-file', which would work for local tests
+          but not if the step is included in another bitrise.yml!
+        inputs:
+        - content: |-
+            #!/bin/bash
+            set -e
+            tmp_pth="$(pwd)/_tmp"
+            echo " * tmp_pth: ${tmp_pth}"
+            set -v
+            mkdir -p "${tmp_pth}"
+            envman add --key BITRISE_SOURCE_DIR --value "${tmp_pth}"
+    - path::./:
+        run_if: "true"
+        inputs:
+        - version_channel_id: -stable
     - path::./:
         run_if: "true"
         inputs:
         - version_channel_id: -latest
+    - path::./:
+        run_if: "true"
+        inputs:
+        - version_channel_id: -beta
+    - path::./:
+        run_if: "true"
+        inputs:
+        - version_channel_id: xcode-7
+    - path::./:
+        run_if: "true"
+        inputs:
+        - version_channel_id: xcode-7-beta
+    - path::./:
+        run_if: "true"
+        inputs:
+        - version_channel_id: xcode-6
