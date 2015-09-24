@@ -34,6 +34,7 @@ set_error_cleanup_function CLEANUP_ON_ERROR_FN
 function set_xcode_path_by_channel {
     local channel_id="$1"
     local channel_version_map_file_pth="/Applications/Xcodes/version-map-${channel_id}"
+    echo " * Specified channel: ${channel_id}"
     mapping_file_content="$(cat ${channel_version_map_file_pth})"
     if [[ "${mapping_file_content}" == "" ]] ; then
       echo " [!] No version mapping found for channel: ${channel_id} / mapping file path: ${channel_version_map_file_pth}"
