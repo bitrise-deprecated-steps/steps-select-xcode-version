@@ -26,7 +26,7 @@ dependencies:
     name: xcode
 run_if: ".IsCI"
 inputs:
-  - version_channel_id: "-stable"
+  - version_channel_id: "xcode-7"
     opts:
       title: "Xcode version channel ID"
       description: |
