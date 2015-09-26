@@ -33,7 +33,14 @@ set_error_cleanup_function CLEANUP_ON_ERROR_FN
 
 function set_xcode_path_by_channel {
     local channel_id="$1"
-    CONFIG_xcode_path="/Applications/Xcodes/Xcode${channel_id}.app"
+    local channel_version_map_file_pth="/Applications/Xcodes/version-map-${channel_id}"
+    echo " * Specified channel: ${channel_id}"
+    mapping_file_content="$(cat ${channel_version_map_file_pth})"
+    if [[ "${mapping_file_content}" == "" ]] ; then
+      echo " [!] No version mapping found for channel: ${channel_id} / mapping file path: ${channel_version_map_file_pth}"
+      exit 2
+    fi
+    CONFIG_xcode_path="${mapping_file_content}"
 }
 
 if [ -z "${version_channel_id}" ] ; then
@@ -45,15 +52,6 @@ write_section_to_formatted_output "# Select Xcode Version"
 
 CONFIG_xcode_path=""
 set_xcode_path_by_channel "${version_channel_id}"
-if [[ "${version_channel_id}" == "-latest" ]] ; then
-    set_xcode_path_by_channel "-beta"
-    if [ ! -e "${CONFIG_xcode_path}" ] ; then
-        echo " (i) No -beta Xcode available, selecting -stable instead."
-        set_xcode_path_by_channel "-stable"
-    else
-        echo " (i) -beta Xcode found"
-    fi
-fi
 
 echo_string_to_formatted_output " * Selecting Xcode: \`${CONFIG_xcode_path}\`"
 
