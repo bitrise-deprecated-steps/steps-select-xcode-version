@@ -76,6 +76,7 @@ xcodebuild -showsdks
 echo
 echo
 echo '## Simulators'
-echo '(includes simulators which are only available for another Xcode version)'
+echo '(Every simulator, even the ones which are available for another Xcode version.)'
+echo "(If a simulator is listed as 'unavailable' it means it's not available for THIS Xcode version.)"
 echo
 xcrun simctl list
