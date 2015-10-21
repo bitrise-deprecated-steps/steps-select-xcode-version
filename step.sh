@@ -55,16 +55,16 @@ set_xcode_path_by_channel "${version_channel_id}"
 
 echo_string_to_formatted_output " * Selecting Xcode: \`${CONFIG_xcode_path}\`"
 
-original_xcode_path="/Applications/Xcode.app"
-if [[ -d "${original_xcode_path}" ]]; then
-  echo " [!] Xcode already installed at ${original_xcode_path}"
+canonical_xcode_path="/Applications/Xcode.app"
+if [[ -d "${canonical_xcode_path}" ]]; then
+  echo " [!] Xcode already installed at ${canonical_xcode_path}"
   exit 1
 fi
 
-if [[ -L "${original_xcode_path}" ]]; then
-  rm "${original_xcode_path}"
+if [[ -L "${canonical_xcode_path}" ]]; then
+  rm "${canonical_xcode_path}"
 fi
-ln -s "${CONFIG_xcode_path}" "${original_xcode_path}"
+ln -s "${CONFIG_xcode_path}" "${canonical_xcode_path}"
 
 
 sudo xcode-select --switch "${CONFIG_xcode_path}"
