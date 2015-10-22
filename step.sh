@@ -56,15 +56,21 @@ set_xcode_path_by_channel "${version_channel_id}"
 echo_string_to_formatted_output " * Selecting Xcode: \`${CONFIG_xcode_path}\`"
 
 canonical_xcode_path="/Applications/Xcode.app"
-if [[ -d "${canonical_xcode_path}" ]]; then
-  echo " [!] Xcode already installed at ${canonical_xcode_path}"
-  exit 1
-fi
+if [[ "$CONFIG_xcode_path" != "$canonical_xcode_path" ]] ; then
+  if [[ -L "${canonical_xcode_path}" ]]; then
+    rm "${canonical_xcode_path}"
+  fi
 
-if [[ -L "${canonical_xcode_path}" ]]; then
-  rm "${canonical_xcode_path}"
+  if [[ -d "${canonical_xcode_path}" ]]; then
+    echo " [!] Xcode already installed at ${canonical_xcode_path}, can't create symlink for selected version!"
+    exit 1
+  fi
+
+  ln -s "${CONFIG_xcode_path}" "${canonical_xcode_path}"
+  echo " (i) Created a symlink to the selected Xcode version ($CONFIG_xcode_path) to the canonical Xcode path: $canonical_xcode_path"
+else
+  echo " (i) Selected Xcode is already at ${canonical_xcode_path} - no symlink required"
 fi
-ln -s "${CONFIG_xcode_path}" "${canonical_xcode_path}"
 
 
 sudo xcode-select --switch "${CONFIG_xcode_path}"
