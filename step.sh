@@ -58,6 +58,8 @@ echo_string_to_formatted_output " * Selecting Xcode: \`${CONFIG_xcode_path}\`"
 canonical_xcode_path="/Applications/Xcode.app"
 if [[ "$CONFIG_xcode_path" != "$canonical_xcode_path" ]] ; then
   if [[ -L "${canonical_xcode_path}" ]]; then
+    echo " (i) Symlink found at ${canonical_xcode_path} - removing it to replace with the selected version's symlink"
+    echo '$' rm "${canonical_xcode_path}"
     rm "${canonical_xcode_path}"
   fi
 
@@ -66,13 +68,14 @@ if [[ "$CONFIG_xcode_path" != "$canonical_xcode_path" ]] ; then
     exit 1
   fi
 
+  echo " (i) Creating a symlink to the canonical path ($canonical_xcode_path), pointing to the selected version ($CONFIG_xcode_path)"
+  echo '$' ln -s "${CONFIG_xcode_path}" "${canonical_xcode_path}"
   ln -s "${CONFIG_xcode_path}" "${canonical_xcode_path}"
-  echo " (i) Created a symlink to the selected Xcode version ($CONFIG_xcode_path) to the canonical Xcode path: $canonical_xcode_path"
 else
   echo " (i) Selected Xcode is already at ${canonical_xcode_path} - no symlink required"
 fi
 
-
+echo '$' sudo xcode-select --switch "${CONFIG_xcode_path}"
 sudo xcode-select --switch "${CONFIG_xcode_path}"
 fail_if_cmd_error "Failed to activate the specified Xcode version"
 
