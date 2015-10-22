@@ -55,6 +55,17 @@ set_xcode_path_by_channel "${version_channel_id}"
 
 echo_string_to_formatted_output " * Selecting Xcode: \`${CONFIG_xcode_path}\`"
 
+canonical_xcode_path="/Applications/Xcode.app"
+if [[ -d "${canonical_xcode_path}" ]]; then
+  echo " [!] Xcode already installed at ${canonical_xcode_path}"
+  exit 1
+fi
+
+if [[ -L "${canonical_xcode_path}" ]]; then
+  rm "${canonical_xcode_path}"
+fi
+ln -s "${CONFIG_xcode_path}" "${canonical_xcode_path}"
+
 
 sudo xcode-select --switch "${CONFIG_xcode_path}"
 fail_if_cmd_error "Failed to activate the specified Xcode version"
