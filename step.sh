@@ -95,6 +95,10 @@ echo '## Xcode SDKs'
 xcodebuild -showsdks
 echo
 echo
+echo '## Removing duplicate Simulator definitions...'
+echo
+go run "${THIS_SCRIPT_DIR}/simctl-cleanup/main.go" -delete
+echo
 echo '## Simulators'
 echo '(List of Simulators available for this Xcode version)'
 echo
