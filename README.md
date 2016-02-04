@@ -1,5 +1,14 @@
 # Select Xcode version
 
+**DEPRECATED**: There's no need to use this Step on the new [bitrise.io](https://www.bitrise.io)
+Stacks.
+
+This step is basically a no-op [on the new Stacks](http://blog.bitrise.io/2016/01/20/here-comes-the-new-stack.html),
+and should not be used anymore.
+
+
+## Description
+
 The new Select Xcode version step.
 
 Selects / activates the specified Xcode version.
